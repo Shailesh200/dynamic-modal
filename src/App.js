@@ -1,138 +1,109 @@
-import { Button, Layout } from 'antd';
-import './App.css';
-import { connect } from 'react-redux';
-import { Typography } from 'antd';
+import React, { useState } from 'react';
+import "./App.css";
+import { Button, Layout } from "antd";
+import { Typography } from "antd";
+import { connect } from "react-redux";
+import { InputNumber } from "antd";
 
-import SmartModal from './components/modal/SmartModal';
-import { hideModal, showModal } from './core/actionCreators';
+import Components from "./component";
+
+import { showModal } from "./core/actionCreators";
 
 function App(props) {
   const { Title, Text } = Typography;
   const { Header } = Layout;
+  const { showModal } = props;
 
-  const { showModal, hideModal, modals } = props;
+  const [listOfModals, setListOfModals] = useState([]);
 
 
-  const showCloseModalButton = () => {
-    let listOfModals = Object.values(modals)
-
+  const ModalContent = (props) => {
+    const [height, setHeight] = useState(300);
+    const [width, setWidth] = useState(300);
+    function onHeightChange(value) {
+      setHeight(value);
+    }
+    function onWidthChange(value) {
+      setWidth(value);
+    }
     return (
       <div>
-        {
-          listOfModals.map((modal) => {
-            if (modal.visible) {
-              return (
-                <Button key={'show-' + modal.id} onClick={() => hideModal(modal.id)}>
-                  Close Modal {modal.id}
-                </Button>
-              )
-            }
-            return null;
-          })
-        }
+        <Title level={4}>SmartModal {props.modalId}</Title>
+        <div className="modal-footer">
+          <div className="dimension-container">
+            <Text mark>Enter height of new modal</Text>
+            <InputNumber
+              defaultValue={300}
+              onChange={onHeightChange}
+            />
+          </div>
+          <div className="dimension-container">
+            <Text mark>Enter width of new modal</Text>
+            <InputNumber
+              defaultValue={300}
+              onChange={onWidthChange}
+            />
+          </div>
+          {props.children}
+          <Text mark>You can Open New Modal:</Text>
+          <div>
+            <Button
+              onClick={() =>
+                createModalComp(
+                  (parseInt(props.modalId, 10) + 1).toString(),
+                  height,
+                  width
+                )
+              }
+            >
+              Open new modal
+            </Button>
+          </div>
+        </div>
       </div>
-    )
-  }
+    );
+  };
 
+  const removeModal = () => {
+    let currentListOfModals = listOfModals;
+    currentListOfModals.pop();
+    setListOfModals([...currentListOfModals]);
+  };
+
+  const createModalComp = (modalId, height, width) => {
+    let currentListOfModals = listOfModals;
+    let modalObj = {
+      modalId,
+      component: "modal",
+      height: height,
+      width: width,
+      handleCancel: removeModal,
+      children: <ModalContent modalId={modalId}><p>Hello</p></ModalContent>
+    };
+    currentListOfModals.push(modalObj);
+    setListOfModals([...currentListOfModals]);
+    showModal(modalId);
+  };
+
+  
   return (
     <div className="app-container">
       <Header>
-        <Title className="heading" level={2}>Treebo Hotels - Assignment</Title>
+        <Title className="heading" level={2}>
+          Dynamic Stack Modal - Example
+        </Title>
       </Header>
       <div className="App">
-
-        <SmartModal modalId={"1"}>
-          <Title level={4}>SmartModal 1</Title>
-          <div className="modal-content">
-            <p>Let the user resize both the height and the width of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-          </div>
-          <div className="modal-footer">
-            <Text mark>You can Open New Modal:</Text>
-            <div>
-              <Button onClick={() => showModal("2")}>
-                Open Modal 2
-            </Button>
-            </div>
-            <Text mark>Or you can close opened Modals:</Text>
-            {showCloseModalButton()}
-          </div>
-        </SmartModal>
-        <SmartModal modalId={"2"}>
-          <Title level={4}>SmartModal 2</Title>
-          <div className="modal-content">
-            <p>Let the user resize both the height and the width of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-          </div>
-          <div className="modal-footer">
-            <Text mark>You can Open New Modal:</Text>
-            <div>
-              <Button onClick={() => showModal("3")}>
-                Open Modal 3
-            </Button>
-            </div>
-            <Text mark>Or you can close opened Modals:</Text>
-            {showCloseModalButton()}
-          </div>
-        </SmartModal>
-
-        <SmartModal modalId={"3"}>
-          <Title level={4}>SmartModal 3</Title>
-          <div className="modal-content">
-            <p>Let the user resize both the height and the width of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-          </div>
-          <div className="modal-footer">
-            <Text mark>You can Open New Modal:</Text>
-            <div>
-              <Button onClick={() => showModal("4")}>
-                Open Modal 4
-            </Button>
-            </div>
-            <Text mark>Or you can close opened Modals:</Text>
-            {showCloseModalButton()}
-          </div>
-        </SmartModal>
-
-        <SmartModal modalId={"4"}>
-          <Title level={4}>SmartModal 4</Title>
-          <div className="modal-content">
-            <p>Let the user resize both the height and the width of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-            <p>To resize: Click and drag the bottom right corner of this div element.</p>
-          </div>
-          <div className="modal-footer">
-            <Text mark>You can close opened Modals:</Text>
-            {showCloseModalButton()}
-          </div>
-        </SmartModal>
-        <Button onClick={() => showModal("1")} type="primary">Open Modal 1</Button>
+        {listOfModals.map((block) => Components(block))}
+        <Button onClick={() => createModalComp("1", 300, 400)} type="primary">
+          Open Modal 1
+        </Button>
       </div>
     </div>
   );
 }
 
-
-const mapStateToProps = (state) => ({
-  modals: state.modals.modals
-});
-
-
-
 const mapDispatchToProps = (dispatch) => ({
-  showModal: (id) => dispatch(showModal(id)),
-  hideModal: (id) => dispatch(hideModal(id))
+  showModal: (id) => dispatch(showModal(id))
 });
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

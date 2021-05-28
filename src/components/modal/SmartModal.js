@@ -1,47 +1,41 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Modal } from "antd";
+import "./modal.css";
 
 import { hideModal, registerModal } from "../../core/actionCreators";
-import SmartDiv from "../SmartDiv/SmartDiv";
-
 
 function SmartModal(props) {
-
-  const { hideModal, modalId, modals, children } = props;
-  const modal = modals[modalId];
+  const { hideModal, modals, block } = props;
+  const modal = modals[block.modalId];
 
   const handleCancel = () => {
-    hideModal(modalId);
-  }
-
-  const handleOk = () => {
-    hideModal(modalId);
-  }
+    block.handleCancel();
+    hideModal(block.modalId);
+  };
 
   if (!modal) {
     return "";
   }
 
-
   return (
-    <Modal
-      centered={true}
-      title="Basic Modal"
-      mask={false}
-      width="max-content"
-      style={{ pointerEvents: "all" }}
-      onCancel={() => handleCancel()}
-      onOk={handleOk}
-      visible={modal.visible}
-    >
-      <SmartDiv>
-        {children}
-      </SmartDiv>
-    </Modal>
+    <div className={`modal-container ${modal.visible ? "open" : ""}`}>
+      <div
+        style={{
+          height: block.height,
+          width: block.width
+        }}
+        className="modal-content-wrapper"
+      >
+        <div className="modal-content">
+          <button onClick={handleCancel} className="close-btn">
+            x
+          </button>
+          {block.children}
+        </div>
+      </div>
+    </div>
   );
 }
-
 
 const mapStateToProps = (state) => ({
   modals: state.modals.modals

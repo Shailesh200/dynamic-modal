@@ -1,8 +1,8 @@
-# Getting Started with Treebo Hotels: Assignment
-
-### This project is solely used for the submission of assignment for Treebo Hotels for Frontend Developer profile.
+# Getting Started with Dynamic Stack Modal - Example
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Demo: [View here](https://codesandbox.io/s/nifty-hopper-m0fzs)
 
 ## Available Scripts
 
@@ -32,34 +32,17 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Features
 
-## Learn More
+- Modal Component using pure HTML, CSS & JS
+- Dynamic Modal Component creation
+- Stacked modal in LIFO structure
+- Configuralble dimensions for Modals
+- Close button inside every modal
+- Modal can be opened/closed from any component from the component tree
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Another approach
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The another way to implement the same use case to implement via Context APIs instead of Redux. Context APIs can be used as an alternative to a global state managment system. Context basically helps in providing information to the nested components inside the component tree. 
+We can create the modal object which was used in the `rootReducer.js` inside the context and thus can be passed to all the components inside the component tree.
